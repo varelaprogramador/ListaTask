@@ -1,69 +1,96 @@
-let qtdTask = 2;
 
-function formAddTask(){
-    // Criar a div com o ID "box-addTask"
-const boxAddTask = document.createElement('div');
-boxAddTask.id = 'box-addTask';
 
-// Criar o formulário com o ID "form-addTask" e definir a função "criaTask(event)" para o evento "onsubmit"
-const formAddTask = document.createElement('form');
-formAddTask.setAttribute('onsubmit', 'criaTask(event)');
-formAddTask.id = 'form-addTask';
 
-// Criar a label para o campo "Nome da Tarefa"
-const labelNomeTask = document.createElement('label');
-labelNomeTask.setAttribute('for', 'nomeTask');
-labelNomeTask.textContent = 'Nome da Tarefa*';
 
-// Criar o input para o campo "Nome da Tarefa" com o ID "nomeTask-inpt" e o atributo "name" definido como "nomeTask"
-const inputNomeTask = document.createElement('input');
-inputNomeTask.setAttribute('name', 'nomeTask');
-inputNomeTask.id = 'nomeTask-inpt';
-inputNomeTask.type = 'text';
+let formAdd = 'form-addTask';
+let btnExcluir = true;
+let task = [];
 
-// Criar a label para o campo "Descrição"
-const labelDescriTask = document.createElement('label');
-labelDescriTask.setAttribute('for', 'descriTask');
-labelDescriTask.textContent = 'Descrição';
+let qtdTask = () => {
+    return task.length + 1;
+};
+function renderTask(){
+    document.getElementById("area-task").innerHTML="";
 
-// Criar a textarea para o campo "Descrição" com o ID "descriTask-inpt" e definir o número de linhas e colunas
-const textareaDescriTask = document.createElement('textarea');
-textareaDescriTask.setAttribute('name', 'descriTask');
-textareaDescriTask.id = 'descriTask-inpt';
-textareaDescriTask.setAttribute('rows', '4');
-textareaDescriTask.setAttribute('cols', '50');
+    task.map((todo)=>{
+        document.getElementById("area-task").appendChild(todo)
+        console.log('Tarefa :'+todo);
 
-// Criar o botão de submit com o valor "Criar Tarefa"
-const submitButton = document.createElement('input');
-submitButton.type = 'submit';
-submitButton.value = 'Criar Tarefa';
 
-// Adicionar os elementos criados ao formulário
-formAddTask.appendChild(labelNomeTask);
-formAddTask.appendChild(inputNomeTask);
-formAddTask.appendChild(labelDescriTask);
-formAddTask.appendChild(textareaDescriTask);
-formAddTask.appendChild(submitButton);
+    });
 
-// Adicionar o formulário à div "box-addTask"
-boxAddTask.appendChild(formAddTask);
-document.getElementById('global').insertAdjacentElement('afterbegin',boxAddTask);
 }
+
+function formAddTask() {
+    // Criar a div com o ID "box-addTask"
+    if (!document.getElementById(formAdd)) {
+        const boxAddTask = document.createElement('div');
+        boxAddTask.id = 'box-addTask';
+
+        // Criar o formulário com o ID "form-addTask" e definir a função "criaTask(event)" para o evento "onsubmit"
+        const formAddTask = document.createElement('form');
+        formAddTask.setAttribute('onsubmit', 'criaTask(event)');
+        formAddTask.id = 'form-addTask';
+
+        // Criar a label para o campo "Nome da Tarefa"
+        const labelNomeTask = document.createElement('label');
+        labelNomeTask.setAttribute('for', 'nomeTask');
+        labelNomeTask.textContent = 'Nome da Tarefa*';
+
+        // Criar o input para o campo "Nome da Tarefa" com o ID "nomeTask-inpt" e o atributo "name" definido como "nomeTask"
+        const inputNomeTask = document.createElement('input');
+        inputNomeTask.setAttribute('name', 'nomeTask');
+        inputNomeTask.id = 'nomeTask-inpt';
+        inputNomeTask.type = 'text';
+
+        // Criar a label para o campo "Descrição"
+        const labelDescriTask = document.createElement('label');
+        labelDescriTask.setAttribute('for', 'descriTask');
+        labelDescriTask.textContent = 'Descrição';
+
+        // Criar a textarea para o campo "Descrição" com o ID "descriTask-inpt" e definir o número de linhas e colunas
+        const textareaDescriTask = document.createElement('textarea');
+        textareaDescriTask.setAttribute('name', 'descriTask');
+        textareaDescriTask.id = 'descriTask-inpt';
+        textareaDescriTask.setAttribute('rows', '4');
+        textareaDescriTask.setAttribute('cols', '50');
+
+        // Criar o botão de submit com o valor "Criar Tarefa"
+        const submitButton = document.createElement('input');
+        submitButton.type = 'submit';
+        submitButton.value = 'Criar Tarefa';
+
+        // Adicionar os elementos criados ao formulário
+        formAddTask.appendChild(labelNomeTask);
+        formAddTask.appendChild(inputNomeTask);
+        formAddTask.appendChild(labelDescriTask);
+        formAddTask.appendChild(textareaDescriTask);
+        formAddTask.appendChild(submitButton);
+
+        // Adicionar o formulário à div "box-addTask"
+        boxAddTask.appendChild(formAddTask);
+
+        document.getElementById('global').insertAdjacentElement('afterbegin', boxAddTask);
+    } else {
+        console.log('tentou abrir um novo form erro');
+    }
+}
+
 
 function criaTask(event) {
     event.preventDefault();
-    
+
 
     const newTask = {
-        nomeTask: document.getElementById('nomeTask-inpt').value,
-        descriTask: document.getElementById('descriTask-inpt').value
+        nomeTask: document.getElementById('nomeTask-inpt'),
+        descriTask: document.getElementById('descriTask-inpt')
     }
 
-    
+    if(!newTask.nomeTask.value == "" && !newTask.descriTask.value == ""){
 
     // Criar o elemento base da lista
     const listItem = document.createElement('li');
-    listItem.id = `task-${qtdTask}`; // Definir o ID
+    listItem.classList.add('box-task');
 
     // Criar o elemento article para conter o conteúdo da tarefa
     const article = document.createElement('article');
@@ -74,7 +101,7 @@ function criaTask(event) {
 
     // Criar o elemento título (h1)
     const title = document.createElement('h1');
-    title.textContent = newTask.nomeTask; // Definir o texto do título
+    title.textContent = newTask.nomeTask.value; // Definir o texto do título
 
     // Adicionar o título ao header
     header.appendChild(title);
@@ -85,7 +112,7 @@ function criaTask(event) {
 
     // Criar o elemento parágrafo (p) para a descrição
     const description = document.createElement('p');
-    description.textContent = newTask.descriTask;
+    description.textContent = newTask.descriTask.value;
 
     // Criar o elemento botão
     const button = document.createElement('button');
@@ -100,48 +127,63 @@ function criaTask(event) {
 
     listItem.appendChild(article);
 
+    
+
     const taskList = document.getElementById('area-task');
-    if (taskList.appendChild(listItem)) {
-        qtdTask++;
-        form=document.getElementById('box-addTask');
-        form.remove();
-        console.log(qtdTask)
-    }
-}
-
-function selectionTask() {
-    const btnExc=document.createElement('button');
-    btnExc.textContent="EXCLUIR";
-    btnExc.setAttribute("Onclick","excluirTask()");
-    btnExc.id='excluir';
-    document.getElementById('body-content').insertAdjacentElement('afterbegin', btnExc);
-
-    for (i = 1; i <= qtdTask; i++) {
-
-        const selectionTask = document.getElementById(`task-${i}`);
-        const checkBox = document.createElement('input');
-        checkBox.setAttribute('type', 'checkbox')
-        checkBox.id=`checkBox-${i}`;
-        selectionTask.appendChild(checkBox);
-
-    }
-}
-function excluirTask(){
-    let qtdExclusao=0;
-    for(i = 1; i <= qtdTask; i++){
-       
-        const v=document.getElementById(`checkBox-${i}`);
-        if(v.checked){ 
-            const selectionTask = document.getElementById(`task-${i}`);
-            selectionTask.remove();
-            console.log(`task-${i}`);
-            qtdExclusao++;
-        }
+    taskList.appendChild(listItem);
+        //adicionando a lista
+        
+        task.push(listItem);
+        console.log("nova tarefa inserida"+task);
 
         
-    }
-    qtdTask-=qtdExclusao;
-
-    let btn = document.getElementById('excluir');
-    btn.remove();
+        
+        document.getElementById(formAdd).remove();
+}else{
+        newTask.nomeTask.value=="" ?newTask.nomeTask.style.border="1px solid red":"";
+       
+ 
+        newTask.descriTask.value=="" ?newTask.descriTask.style.border="1px solid red":"";
+   
 }
+}
+
+function modeRemove() {
+    if (btnExcluir == true) {
+        btnExcluir = document.createElement('button');
+        btnExcluir.textContent = "EXCLUIR";
+        btnExcluir.setAttribute("Onclick", "excluirTask()");
+        btnExcluir.id = 'excluir';
+        document.getElementById('body-content').insertAdjacentElement('afterbegin', btnExcluir);
+
+        for (i = 0; i < qtdTask(); i++) {
+            console.log(task[i]);
+            const checkBox = document.createElement('input');
+            checkBox.type = 'checkbox'
+            checkBox.classList = `selection-remove`;
+            task[i].insertAdjacentElement('afterbegin', checkBox);
+            console.log("checkbox add"+i);
+
+        }
+    }
+}
+function excluirTask() {
+    document.querySelector('#excluir').remove();
+    qtdTask();
+    const checkBox = document.querySelectorAll('.selection-remove');
+
+    for (i = 0; i < qtdTask(); i++) {
+
+        if (checkBox[i].checked) {
+            task[i].remove();
+            task.splice(i, 1);
+            checkBox.splice(i, 1);
+            renderTask();
+            console.log(task.length)
+        }
+
+
+    }
+    
+        btnExcluir = true;
+    }
