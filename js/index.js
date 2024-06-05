@@ -7,7 +7,7 @@ let btnExcluir = true;
 let task = [];
 
 let qtdTask = () => {
-    return task.length + 1;
+    return task.length ;
 };
 function renderTask(){
     document.getElementById("area-task").innerHTML="";
@@ -149,7 +149,7 @@ function criaTask(event) {
 }
 
 function modeRemove() {
-    if (btnExcluir == true) {
+    if (!document.getElementById('excluir')) {
         btnExcluir = document.createElement('button');
         btnExcluir.textContent = "EXCLUIR";
         btnExcluir.setAttribute("Onclick", "excluirTask()");
@@ -169,20 +169,21 @@ function modeRemove() {
 }
 function excluirTask() {
     document.querySelector('#excluir').remove();
-    qtdTask();
+    let quant = qtdTask();
     const checkBox = document.querySelectorAll('.selection-remove');
-
+    console.log(checkBox);
     for (i = 0; i < qtdTask(); i++) {
 
         if (checkBox[i].checked) {
+            
             task[i].remove();
             task.splice(i, 1);
-            checkBox.splice(i, 1);
             renderTask();
             console.log(task.length)
+            i = 0;
         }
 
-
+        console.log(qtdTask());
     }
     
         btnExcluir = true;
