@@ -4,7 +4,7 @@
 
 let formAdd = 'form-addTask';
 let btnExcluir;
-const btnAddTask=document.querySelector('.add-task');
+const btnAddTask = document.querySelector('.add-task');
 let task = [];
 
 let qtdTask = () => {
@@ -23,7 +23,7 @@ function renderTask() {
 }
 
 function formAddTask() {
-    
+
     // Criar a div com o ID "box-addTask"
     if (!document.getElementById(formAdd)) {
         const boxAddTask = document.createElement('div');
@@ -176,29 +176,26 @@ function excluirTask() {
     console.log(checkBox);
 
     const positionDelete = [];
-
-
-    for (i = 0; i < checkBox.length; i++) {
-
-        if (checkBox[i].checked) {
+    let i=0;
+    checkBox.forEach((elemento) => {
+        
+        if (elemento.checked) {
             positionDelete.push(i);
-
-            task[i].remove();
             console.log(i);
 
         }
+        elemento.remove();
+        i++;
+    });
 
-
-    }
     console.log("ha ser deletado:" + positionDelete);
-    let indice;
 
-    for (i = 0; i < positionDelete.length; i++) {
-
-        indice = positionDelete[i];
-        task.splice(indice, 1);
-
-    }
+    positionDelete.forEach((indice) => {
+        task[indice].remove();
+        task.splice(indice, 1)
+        console.log("ha ser deletado:" + indice);
+        renderTask();
+    });
     // if (positionDelete.length == 1) {
     //     indice = positionDelete[0];
     //     task.splice(indice, 1);
@@ -211,8 +208,8 @@ function excluirTask() {
 
     //     }
     // }
-    checkBox.forEach((elemento) => elemento.remove());
-    renderTask();
+
+
 
 
 
