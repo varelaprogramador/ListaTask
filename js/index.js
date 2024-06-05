@@ -3,18 +3,19 @@
 
 
 let formAdd = 'form-addTask';
-let btnExcluir = true;
+let btnExcluir;
+const btnAddTask=document.querySelector('.add-task');
 let task = [];
 
 let qtdTask = () => {
-    return task.length ;
+    return task.length;
 };
-function renderTask(){
-    document.getElementById("area-task").innerHTML="";
+function renderTask() {
+    document.getElementById("area-task").innerHTML = "";
 
-    task.map((todo)=>{
-        document.getElementById("area-task").appendChild(todo)
-        console.log('Tarefa :'+todo);
+    task.map((todo) => {
+        document.getElementById("area-task").appendChild(todo);
+        console.log('Tarefa :' + todo);
 
 
     });
@@ -22,6 +23,7 @@ function renderTask(){
 }
 
 function formAddTask() {
+    
     // Criar a div com o ID "box-addTask"
     if (!document.getElementById(formAdd)) {
         const boxAddTask = document.createElement('div');
@@ -80,72 +82,72 @@ function formAddTask() {
 function criaTask(event) {
     event.preventDefault();
 
-
     const newTask = {
         nomeTask: document.getElementById('nomeTask-inpt'),
         descriTask: document.getElementById('descriTask-inpt')
-    }
+    };
 
-    if(!newTask.nomeTask.value == "" && !newTask.descriTask.value == ""){
+    if (newTask.nomeTask.value != "" && newTask.descriTask.value != "") {
+        // Criar o elemento base da lista
+        const listItem = document.createElement('li');
+        listItem.classList.add('box-task');
 
-    // Criar o elemento base da lista
-    const listItem = document.createElement('li');
-    listItem.classList.add('box-task');
+        // Criar o elemento article para conter o conteúdo da tarefa
+        const article = document.createElement('article');
+        article.classList.add('task');
 
-    // Criar o elemento article para conter o conteúdo da tarefa
-    const article = document.createElement('article');
-    article.classList.add('task');
+        // Criar o elemento header para o título
+        const header = document.createElement('header');
 
-    // Criar o elemento header para o título
-    const header = document.createElement('header');
+        // Criar o elemento título (h1)
+        const title = document.createElement('h1');
+        title.textContent = newTask.nomeTask.value; // Definir o texto do título
 
-    // Criar o elemento título (h1)
-    const title = document.createElement('h1');
-    title.textContent = newTask.nomeTask.value; // Definir o texto do título
+        // Adicionar o título ao header
+        header.appendChild(title);
 
-    // Adicionar o título ao header
-    header.appendChild(title);
+        // Criar o elemento label para a descrição (h2)
+        const descriptionLabel = document.createElement('h2');
+        descriptionLabel.textContent = 'Descrição:';
 
-    // Criar o elemento label para a descrição (h2)
-    const descriptionLabel = document.createElement('h2');
-    descriptionLabel.textContent = 'Descrição:';
+        // Criar o elemento parágrafo (p) para a descrição
+        const description = document.createElement('p');
+        description.textContent = newTask.descriTask.value;
 
-    // Criar o elemento parágrafo (p) para a descrição
-    const description = document.createElement('p');
-    description.textContent = newTask.descriTask.value;
+        // Criar o elemento botão
+        const button = document.createElement('button');
+        button.classList.add('btn-taskV'); // Adicionar a classe "btn-taskV"
+        button.textContent = 'Ver Tarefa'; // Definir o texto do botão
 
-    // Criar o elemento botão
-    const button = document.createElement('button');
-    button.classList.add('btn-taskV'); // Adicionar a classe "btn-taskV"
-    button.textContent = 'Ver Tarefa'; // Definir o texto do botão
+        // Construir a estrutura aninhando os elementos
+        article.appendChild(header);
+        article.appendChild(descriptionLabel);
+        article.appendChild(description);
+        article.appendChild(button);
 
-    // Construir a estrutura aninhando os elementos
-    article.appendChild(header);
-    article.appendChild(descriptionLabel);
-    article.appendChild(description);
-    article.appendChild(button);
+        listItem.appendChild(article);
 
-    listItem.appendChild(article);
+        // Adicionando a nova tarefa
+        task.unshift(listItem);
 
-    
 
-    const taskList = document.getElementById('area-task');
-    taskList.appendChild(listItem);
-        //adicionando a lista
-        
-        task.push(listItem);
-        console.log("nova tarefa inserida"+task);
 
-        
-        
+        renderTask();
+
+        console.log("Nova tarefa inserida: " + newTask.nomeTask);
+
+        console.log("nova tarefa inserida" + task);
+
         document.getElementById(formAdd).remove();
-}else{
-        newTask.nomeTask.value=="" ?newTask.nomeTask.style.border="1px solid red":"";
-       
- 
-        newTask.descriTask.value=="" ?newTask.descriTask.style.border="1px solid red":"";
-   
-}
+
+    } else {
+        console.log("campos invalidos");
+        newTask.nomeTask.value == "" ? newTask.nomeTask.style.border = "1px solid red" : "";
+
+
+        newTask.descriTask.value == "" ? newTask.descriTask.style.border = "1px solid red" : "";
+
+    }
 }
 
 function modeRemove() {
@@ -162,39 +164,60 @@ function modeRemove() {
             checkBox.type = 'checkbox'
             checkBox.classList = `selection-remove`;
             task[i].insertAdjacentElement('afterbegin', checkBox);
-            console.log("checkbox add"+i);
+            console.log("checkbox add" + i);
 
         }
     }
 }
 function excluirTask() {
+
     document.querySelector('#excluir').remove();
-    let quant = qtdTask();
     const checkBox = document.querySelectorAll('.selection-remove');
     console.log(checkBox);
 
-    const positionDelete=[];
+    const positionDelete = [];
+
 
     for (i = 0; i < checkBox.length; i++) {
 
         if (checkBox[i].checked) {
             positionDelete.push(i);
-            
+
             task[i].remove();
-            console.log(task.length)
-           
+            console.log(i);
+
         }
 
-        
+
     }
-    console.log("ha ser deletado:"+positionDelete);
-    for(i=0;i<=positionDelete.length;i++){
-        
-        let indice=positionDelete[i];
-        task.splice(indice,1);
+    console.log("ha ser deletado:" + positionDelete);
+    let indice;
+
+    for (i = 0; i < positionDelete.length; i++) {
+
+        indice = positionDelete[i];
+        task.splice(indice, 1);
+
     }
-    console.log("ULTIMO",task);
+    // if (positionDelete.length == 1) {
+    //     indice = positionDelete[0];
+    //     task.splice(indice, 1);
+    // } else {
+
+    //     for (i = 0; i < positionDelete.length; i++) {
+
+    //         indice = positionDelete[i];
+    //         task.splice(indice, 1);
+
+    //     }
+    // }
+    checkBox.forEach((elemento) => elemento.remove());
+    renderTask();
 
 
-    
-    }
+
+    console.log("ULTIMO", task);
+
+
+
+}
