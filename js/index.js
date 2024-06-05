@@ -150,14 +150,14 @@ function criaTask(event) {
 
 function modeRemove() {
     if (!document.getElementById('excluir')) {
+
         btnExcluir = document.createElement('button');
         btnExcluir.textContent = "EXCLUIR";
         btnExcluir.setAttribute("Onclick", "excluirTask()");
         btnExcluir.id = 'excluir';
         document.getElementById('body-content').insertAdjacentElement('afterbegin', btnExcluir);
 
-        for (i = 0; i < qtdTask(); i++) {
-            console.log(task[i]);
+        for (i = 0; i < task.length; i++) {
             const checkBox = document.createElement('input');
             checkBox.type = 'checkbox'
             checkBox.classList = `selection-remove`;
@@ -172,19 +172,29 @@ function excluirTask() {
     let quant = qtdTask();
     const checkBox = document.querySelectorAll('.selection-remove');
     console.log(checkBox);
-    for (i = 0; i < qtdTask(); i++) {
+
+    const positionDelete=[];
+
+    for (i = 0; i < checkBox.length; i++) {
 
         if (checkBox[i].checked) {
+            positionDelete.push(i);
             
             task[i].remove();
-            task.splice(i, 1);
-            renderTask();
             console.log(task.length)
-            i = 0;
+           
         }
 
-        console.log(qtdTask());
+        
     }
+    console.log("ha ser deletado:"+positionDelete);
+    for(i=0;i<=positionDelete.length;i++){
+        
+        let indice=positionDelete[i];
+        task.splice(indice,1);
+    }
+    console.log("ULTIMO",task);
+
+
     
-        btnExcluir = true;
     }
